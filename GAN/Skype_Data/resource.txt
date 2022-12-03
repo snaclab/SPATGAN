@@ -1,0 +1,13 @@
+http://www.crawdad.org/iitkgp/apptraffic/20151126/apptraffictraces/
+https://crawdad.org/download/iitkgp/apptraffic/Skype/
+
+
+Linux cooked capture to Ethernet:
+tcprewrite --dlt=enet --infile=skype_223.pcap --outfile=skype_eth_1.pcap
+tcprewrite --dlt=enet --infile=skype_226.pcap --outfile=skype_eth_2.pcap
+tcprewrite --dlt=enet --infile=skype_231.pcap --outfile=skype_eth_3.pcap
+tcprewrite --dlt=enet --infile=skype_239.pcap --outfile=skype_eth_4.pcap
+tcprewrite --dlt=enet --infile=skype_241.pcap --outfile=skype_eth_5.pcap
+tcprewrite --dlt=enet --infile=skype_242.pcap --outfile=skype_eth_6.pcap
+
+Ref: https://www.cnblogs.com/aios/p/9545378.html
