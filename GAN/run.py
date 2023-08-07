@@ -171,8 +171,7 @@ def generate_times(train_2, dataSample_2, train_o2, dataSample_o2, label_cnt, se
         z = noise_pool[seed - 1]
         labels = x_o[:, -label_dim:]
         if label_cnt[1] != -1:
-            #labels[:, 0] = float(label_cnt[0])
-            labels[:, 1] = float(label_cnt[1])
+            labels[:, 0] = float(label_cnt[1])
         result = generator_model.predict([z, labels])
         result[:, 0] *= dataSample_2.std()[0] ####30: _o2, 31: _2
         result[:, 0] += dataSample_2.mean()[0]
