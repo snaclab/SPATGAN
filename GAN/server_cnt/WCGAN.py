@@ -105,7 +105,7 @@ arguments[2] = 64
 # adversarial_training_WGAN(arguments, train, data_cols=data_cols)                                    # WGAN
 # adversarial_training_InfoGAN(arguments, train, data_cols=data_cols)                                 # InfoGAN
 # adversarial_training_GAN(arguments, random_subset, data_cols=data_cols, label_cols=label_cols)      # CGAN
-label_cols = ['ret_cnt', 'ret_times']
+label_cols = ['ret_times']
 adversarial_training_WGAN(arguments, train, train_o, data_cols=data_cols, label_cols=label_cols)             # WCGAN
 print('Finish training GAN')
 

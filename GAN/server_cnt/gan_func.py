@@ -394,8 +394,8 @@ def train_discriminator_step(model_components, seed=0):
         d_l_g, d_l_r, _ = sess.run([_disc_loss_generated, _disc_loss_real, disc_optimizer], feed_dict={
             _z: np.random.normal(size=(batch_size, rand_dim)),
             # _x: get_data_batch(train, batch_size, seed=seed),  # size have problem, so can't use class
-            _x: np.hstack((get_data_batch(train, batch_size, seed=seed), get_data_batch(train_o, batch_size, seed=seed)[:, 0:])),
-            _labels: get_data_batch(train_o, batch_size, seed=seed)[:,0:], # .reshape(-1, label_dim),
+            _x: np.hstack((get_data_batch(train, batch_size, seed=seed), get_data_batch(train_o, batch_size, seed=seed)[:, -label_dim:])),
+            _labels: get_data_batch(train_o, batch_size, seed=seed)[:,-label_dim:], # .reshape(-1, label_dim),
             epsilon: np.random.uniform(low=0.0, high=1.0, size=(batch_size, 1))
         })
     else:
@@ -430,7 +430,7 @@ def training_steps_WGAN(model_components):
             np.random.seed(i+j)
             z = np.random.normal(size=(batch_size, rand_dim))
             if with_class:
-                labels = get_data_batch(train_o, batch_size, seed=i+j)[:,:]#shuffle time, label_dim
+                labels = get_data_batch(train_o, batch_size, seed=i+j)[:,-label_dim:]#shuffle time, label_dim
                 loss = combined_model.train_on_batch([z, labels], [-np.ones(batch_size)])
             else:
                 loss = combined_model.train_on_batch(z, [-np.ones(batch_size)])
@@ -443,8 +443,8 @@ def training_steps_WGAN(model_components):
             x = get_data_batch(train, test_size, seed=i)
             z = np.random.normal(size=(test_size, rand_dim))
             if with_class:
-                x = np.hstack((get_data_batch(train, test_size, seed=i), get_data_batch(train_o, test_size, seed=i)[:, 0:]))
-                labels = x[:, -2:]#
+                x = np.hstack((get_data_batch(train, test_size, seed=i), get_data_batch(train_o, test_size, seed=i)[:, -label_dim:]))
+                labels = x[:, -label_dim:]#
                 g_z = generator_model.predict([z, labels])
             else:
                 g_z = generator_model.predict(z)

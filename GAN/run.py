@@ -169,10 +169,10 @@ def generate_times(train_2, dataSample_2, train_o2, dataSample_o2, label_cnt, se
         x = get_data_batch(train_2, 64, seed=seed)
         x_o = get_data_batch(train_o2, 64, seed=seed)
         z = noise_pool[seed - 1]
-        labels = x_o[:, 0:]
-        if label_cnt[0] != -1:
-            labels[0] = float(label_cnt[0])
-            labels[1] = float(label_cnt[1])
+        labels = x_o[:, -label_dim:]
+        if label_cnt[1] != -1:
+            #labels[:, 0] = float(label_cnt[0])
+            labels[:, 1] = float(label_cnt[1])
         result = generator_model.predict([z, labels])
         result[:, 0] *= dataSample_2.std()[0] ####30: _o2, 31: _2
         result[:, 0] += dataSample_2.mean()[0]
@@ -199,7 +199,7 @@ def main(agent, train, dataSample, train_2, dataSample_2, train_o, dataSample_o,
     # Define four network models
     print('Load model && weights')
     generator_model, discriminator_model, combined_model = define_models_CGAN(rand_dim, data_dim, label_dim, base_n_count, type='Wasserstein')
-    generator_model_cnt, discriminator_model_cnt, combined_model_cnt = define_models_CGAN(rand_dim, data_dim, label_dim+1, base_n_count, type='Wasserstein')
+    generator_model_cnt, discriminator_model_cnt, combined_model_cnt = define_models_CGAN(rand_dim, data_dim, label_dim, base_n_count, type='Wasserstein')
     try:
         generator_model.load_weights(path)
         generator_model_cnt.load_weights(path_cnt)
@@ -284,9 +284,9 @@ def main(agent, train, dataSample, train_2, dataSample_2, train_o, dataSample_o,
                     except:
                         seed = 500
                         z = noise_pool[seed - 1]
-                    labels = x_o[:, -1:]
+                    labels = x_o[:, -label_dim:]
                     if cnt != 1:
-                        labels[0] = float(label_times)
+                        labels[:, 0] = float(label_times)
                     g_z = generator_model.predict([z, labels])
 
                     # denormailize the generator's result
